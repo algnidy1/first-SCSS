@@ -1,0 +1,478 @@
+//import global rules
+@use './sass/variables/colors' as *;
+
+// import mixins
+@use './sass/helpers/mixins' as *;
+
+// import pages
+@use './sass/layout/pages/contact' as *;
+
+// import functions
+@use './sass/helpers/functions' as *;
+
+// global variables
+$alt-color: green;
+
+.copyright {
+    background-color: $alt-color;
+}
+
+footer {
+    $alt-color: black;
+    background-color: $alt-color;
+}
+
+header {
+    color: $alt-color;
+}
+
+$max-mobile: " max-width:767px";
+
+@media ($max-mobile) {
+    header {
+        width: 90px;
+    }
+}
+
+// Nesting & Parent Element
+
+.parent {
+    font-weight: bold;
+
+    .child {
+        font-size: 20px;
+
+        .grand-child {
+            font-size: 15px;
+        }
+    }
+}
+
+.parent-one,
+.parent-two {
+    padding: 20px;
+
+    .child {
+        padding: 10px;
+    }
+}
+
+.parent> {
+    .child {
+        font-size: 20px;
+    }
+
+    .test {
+        font-weight: bold;
+    }
+}
+
+.parent {
+    >.child {
+        font-size: 20px;
+    }
+
+    .test {
+        font-weight: bold;
+    }
+
+    +p {
+        font-size: 15px;
+    }
+}
+
+.parent {
+    > {
+        .element-one {
+            font-size: 10px;
+        }
+
+        .element-two {
+            font-size: 10px;
+        }
+    }
+
+    .not-direct-child {
+        font-weight: bold;
+    }
+}
+
+.box {
+    .title {
+        font-size: 10px;
+    }
+
+    .description {
+        font-size: 8px;
+    }
+
+    &.red {
+        color: red;
+    }
+
+    &.green {
+        color: green;
+    }
+
+    &:hover {
+        background-color: #eee;
+    }
+
+    &:hover .title {
+        font-weight: bold;
+    }
+
+    :not(&) {
+        font-weight: normal;
+    }
+
+    [dir="rtl"] & {
+        direction: rtl;
+    }
+}
+
+
+// property declarations and placeholder
+
+
+.box {
+    font-size: 18px;
+
+    font: {
+        size: 15px;
+        weight: bold;
+    }
+
+    padding: 10px;
+
+    margin: auto {
+        top: 10px;
+        bottom: 100px;
+    }
+}
+
+.main-box {
+    background-color: white;
+    padding: 15px;
+    border: 1px solid #ccc;
+}
+
+.genr {
+    @extend .main-box;
+    padding: 0%;
+}
+
+%main-box {
+    background-color: white;
+    padding: 15px;
+    border: 1px solid #ccc;
+}
+
+.ads {
+    @extend %main-box;
+    font-size: 20px;
+    color: red;
+}
+
+.article {
+    font-size: 22px;
+    @extend %main-box;
+    color: green;
+}
+
+
+// Control Flow => If And Else
+
+$theme: "dark";
+
+.page {
+    @if $theme =="light" {
+        background-color: white;
+        color: #444;
+    }
+
+    @else {
+        background-color: #444;
+        color: white;
+    }
+}
+
+$rounded: false;
+
+.box {
+    @extend %main-box;
+    border-radius: if($rounded, 6px, null);
+}
+
+
+/// practice on if and esle if and esle 
+
+$direction: "bottom";
+
+.arrow-div {
+    @extend %main-box;
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+    height: 300px;
+    position: relative;
+    margin: 50px auto;
+
+    &::before {
+        content: "";
+        position: absolute;
+        border: 25px solid transparent;
+
+        @if $direction =="top" {
+            top: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-bottom-color: red;
+        }
+
+        @else if $direction =="right" {
+            right: -50px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-left-color: yellow;
+        }
+
+        @else if $direction =="left" {
+            left: -50px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-right-color: green;
+        }
+
+        @else if $direction =="bottom" {
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-top-color: blue;
+        }
+
+        @else {
+            @error "there is problem about that direction #{$direction} "
+        }
+    }
+}
+
+;
+
+// Interpolation
+
+$company: "falcon";
+$position: "right";
+
+.ad-#{$company}-#{unique-id()} {
+    font-size: 20px;
+    background-image: url("imgs/#{$company}.png");
+    #{$position}: 0;
+}
+
+.ad-#{unique-id()} {
+    font-weight: bold;
+}
+
+;
+
+// Comments
+
+// This Comment Will Not Show In CSS File
+
+/* This Comment Will Show In CSS File But Not In Compressed Mode */
+
+/*! This Comment Will Show In CSS File And In Compressed Mode */
+
+.box
+
+/* Multiple
+Lines
+Comment */
+    {
+    font-size: 20px; // Inline Comment
+}
+
+/* This Comment Contains Interpolation => #{$company} */
+
+/// Function To Do Bla Bla Bla
+///
+/// @param {num}
+/// The Number To Deal With
+/// @return {int}
+/// 
+
+
+// Mixin And Include
+
+ul.links {
+    @include list-reset;
+}
+
+.circle-100 {
+    @include circle(100px);
+    background-color: red;
+    color: white;
+}
+
+.circle-200 {
+    @include circle(200px);
+    background-color: red;
+    color: white;
+}
+
+.center-circle {
+    @include circle(400px);
+    @include centering;
+}
+
+// Loop => For
+
+@for $i from 1 through 10 {
+    .class-#{$i} {
+        font-size: #{$i + 10px};
+    }
+}
+
+$dimensions: 0;
+
+@for $i from 1 through 10 {
+    .circle-#{100 + $dimensions} {
+        width: $dimensions + 100px;
+        height: $dimensions + 100px;
+        border-radius: 50%;
+    }
+
+    $dimensions: $dimensions + 100;
+}
+
+// Each + Maps
+
+$themes: red, green, blue, orange;
+
+@each $theme in $themes {
+    .#{$theme}-theme {
+        .product {
+            background-color: white;
+            border-bottom: 2px solid $theme;
+
+            .title {
+                color: $theme;
+                font-weight: bold;
+            }
+        }
+    }
+}
+
+$socials: (
+    "facebook": blue,
+    "youtube": red,
+    "github": black,
+    "twitter": indianred,
+);
+
+@each $name, $color in $socials {
+    .#{$name} {
+        background-color: $color;
+        color: white;
+
+        &::before {
+            content: $name;
+        }
+    }
+}
+
+$classes: "one" 20px red, "two" 15px green, "three" 22px blue;
+
+@each $class, $font, $color in $classes {
+    .#{$class} {
+        font-size: $font;
+        background-color: $color;
+        color: white;
+        padding: $font / 2;
+    }
+}
+
+
+// Loop => While
+
+$start: 1;
+
+@while $start <=10 {
+    .width-#{$start * 100} {
+        width: $start * 100px;
+        height: ($start * 100px) / 2;
+    }
+
+    $start: $start + 1;
+}
+
+// Create Grid System
+
+$grid_cols: 12;
+
+@for $i from 1 through $grid_cols {
+    .col-#{$i} {
+        width: percentage($i / $grid_cols);
+    }
+}
+
+// Function
+
+$width: 200px;
+
+.element {
+    width: $width;
+    height: half($width);
+    top: calculate(100px, 200px, 50px);
+}
+
+
+
+// Mixin With Content
+
+.black-overlay {
+    @include overlay(black, 0.5);
+}
+
+@include keyF(fade-in) {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@include keyF(go-up) {
+    from {
+        bottom: 0;
+    }
+
+    to {
+        bottom: 100px;
+    }
+}
+
+// If Condition + Mixin + Content
+
+.media {
+    @include breakpoints(mobile) {
+        font-size: 15px;
+    }
+
+    @include breakpoints(small) {
+        font-size: 18px;
+    }
+
+    @include breakpoints(medium) {
+        font-size: 20px;
+    }
+
+    @include breakpoints(large) {
+        font-size: 22px;
+    }
+}
